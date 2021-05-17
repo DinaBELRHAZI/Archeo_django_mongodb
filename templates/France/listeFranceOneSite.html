@@ -1,0 +1,167 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html >
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link href="{% static 'css/listeFranceOneSite.css' %}" rel="stylesheet" media="all">
+
+</head>
+<body>
+
+
+
+<div class='header'>
+    <p class='text-center'>{{ list_site.nom_du_site}}</p>
+    <strong>
+{#        <a class="btn btn-outline-primary"  href='{{ path("listAllFrance") }}' id="btn-liste" >#}
+        <a class="btn btn-outline-primary"  href='/France/' id="btn-liste" >
+             <h3> Liste des sites</h3>
+        </a>
+{#        <a class="btn btn-outline-success" href='{{ path("listeFranceConvert") }}' id="btn-carte" >#}
+        <a class="btn btn-outline-success" href='/France/maps/' id="btn-carte"  >
+            <h3>Carte</h3>
+        </a>
+{#        <a class="btn btn-outline-info" href='{{ path("OneSitePhotos", { 'id': oneSite.getId }) }}' id="btn-img" >#}
+            <h3>Photos</h3>
+        </a>
+    </strong>
+</div>
+
+<div class='container'>
+    <div class='col-sm-4 col-md-3' >
+        <div class="card text-white bg-dark mb-3" >
+            <div class="card-header">{{ list_site.nom_du_site}}</div>
+            <div class="card-body">
+                <p class="card-text">
+                <h3><b>Type d'intervention : </b></h3>
+                <h4>{{ list_site.type_intervention}}</h4>
+                <hr>
+                <h3><b>Adresse : </b></h3>
+                <h4>{{ list_site.region}}
+                    <br>{{ list_site.departement}}, {{ list_site.commune}}
+                </h4>
+                <hr>
+                <h3><b>Dates :</b></h3>
+                <h4>
+                    {{ list_site.date_debut}} - {{ list_site.date_fin}}
+                </h4>
+                <hr>
+                <h3><b>Période :</b></h3>
+                <h4>
+                    {{ list_site.periodes}}
+                </h4>
+                <hr>
+                <h3><b>Thème :</b></h3>
+                <h4>
+                    {{ list_site.themes}}
+                </h4>
+            </div>
+        </div>
+    </div>
+    <div id="map" class='col-sm-6 col-md-6'>
+        <!-- Ici s'affichera la carte -->
+    </div>
+    <div id="streetView" class='col-sm-3 col-md-3'></div>
+
+</div>
+
+</body>
+<script src="{% static 'js/APIKey.js' %}"></script>
+
+
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+<!-- sans asset pb de connection au css image trop grande   -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+
+{# Mettez votre clé API dans var extra #}
+<script id="KEYApi" ></script>
+<script>
+    var extra = localStorage.getItem("maClePerso");
+    var url = "https://maps.google.com/maps/api/js?key=";
+    document.getElementById('KEYApi').src = url + extra;
+</script>
+
+<script async type="text/javascript">
+    // On initialise la latitude et la longitude de Paris (centre de la carte)
+    var lat = 48.852969;
+    var lon = 2.349903;
+    var map = null;
+    // Fonction d'initialisation de la carte
+    function initMap() {
+        // Créer l'objet "map" et l'insèrer dans l'élément HTML qui a l'ID "map"
+        map = new google.maps.Map(document.getElementById("map"), {
+            // Nous plaçons le centre de la carte avec les coordonnées ci-dessus
+            center: new google.maps.LatLng(lat, lon),
+            // Nous définissons le zoom par défaut
+            zoom: 5,
+            // Nous définissons le type de carte (ici carte routière)
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            // Nous activons les options de contrôle de la carte (plan, satellite...)
+            mapTypeControl: true,
+            // Nous désactivons la roulette de souris
+            scrollwheel: false,
+            mapTypeControlOptions: {
+                // Cette option sert à définir comment les options se placent
+                style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR
+            },
+            // Activation des options de navigation dans la carte (zoom...)
+            navigationControl: true,
+            navigationControlOptions: {
+                // Comment ces options doivent-elles s'afficher
+                style: google.maps.NavigationControlStyle.ZOOM_PAN
+            }
+        });
+
+
+        //function appellée pour afficher la viewstreet à partir de coordonnées
+        function streetView(myPointStreet){
+            var panorama = new google.maps.StreetViewPanorama(
+                document.getElementById('streetView'), {
+                    position: myPointStreet,
+                    pov: {
+                        heading: 34,
+                        pitch: 10
+                    }
+                });
+            map.setStreetView(panorama);
+        }
+
+
+        var Nom_du_site = "{{ list_site.nom_du_site}}";
+
+{#        {% for tab in tableau %}#}
+
+            newPoint1 = new google.maps.LatLng({{ list_site.lambert_x}}, {{ list_site.lambert_y}});
+
+            //alert(newPoint1);
+            var marker = new google.maps.Marker({
+
+                position: newPoint1,
+                title: Nom_du_site,
+                map: map
+            });
+
+        streetView(newPoint1);
+
+
+{#        {%  endfor %}#}
+
+    }
+    window.onload = function(){
+        // Fonction d'initialisation qui s'exécute lorsque le DOM est chargé
+        initMap();
+    };
+</script>
+
+</html>
+
+ 

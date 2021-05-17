@@ -1,0 +1,97 @@
+body{
+    background-color: darkolivegreen;
+}
+
+.header {
+    background-color: black;
+}
+
+.text-center {
+    color: azure;
+    font-size: 3.5em;
+    font-weight: 200;
+}
+
+#map{ /* la carte DOIT avoir une hauteur sinon elle n'apparaît pas */
+    height:450px;
+    margin-right: 2px;
+
+}
+
+#streetView{
+    height:450px;
+    width: 350px;
+    margin-left: 13px;
+}
+
+.container{
+    margin-top: 5%;
+    max-width: 1500px;
+}
+
+.container-photos{
+
+    max-width: 50%;
+    margin: 2% auto;
+}
+
+.carousel-item{
+    text-align: center;
+}
+
+.imgCar{
+    height: 450px;
+}
+
+.card-header{
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+
+.container {
+    margin-top: 5%;
+}
+
+/* Boutons */
+
+#btn-liste {
+
+    margin-bottom: 2%;
+    margin-left: 2%;
+}
+
+#btn-carte {
+
+    margin-bottom: 2%;
+    float: right;
+    margin-right: 2%;
+}
+
+#btn-img {
+    margin-bottom: 2%;
+    float: right;
+    margin-right: 2%;
+}
+
+#btn-details {
+    margin-bottom: 2%;
+    margin-left: 2%;
+}
+
+#btn-ajout-photos{
+    margin-bottom: 2%;
+    float: right;
+    margin-right: 2%;
+}
+
+
+/* Make the image fully responsive */
+/*.carousel-inner img {
+    width: 100%;
+    height: 100%;
+}*/
+
+.card {
+    max-width: 100%;
+}

@@ -1,0 +1,57 @@
+body{
+    background-color: darkolivegreen;
+}
+
+#btn_plus{
+    float: right;
+    margin-right: 10%;
+    margin-top: 5%;
+
+}
+
+.header {
+    background-color: black;
+}
+
+.text-center {
+    color: azure;
+    font-size: 4.5em;
+    font-weight: 200;
+    margin-bottom: 5%;
+    padding-top: 5%;
+
+
+}
+
+.container{
+    margin-top: 5%;
+}
+
+.card-header{
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.card-body {
+    padding-left: 5%;
+    padding-top: 5%
+}
+
+
+h3 b{
+    color: olive;
+}
+
+#btn-carte {
+    margin-bottom: 2%;
+    margin-left: 2%;
+}
+
+#btn-creer{
+    margin-bottom: 2%;
+    margin-left: 2%;
+}
+
+#btn_plus{
+    margin-bottom: 5%;
+}
