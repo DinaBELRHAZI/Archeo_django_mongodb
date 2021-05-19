@@ -10,24 +10,20 @@
 
 
     <!-- Icons font CSS-->
-{#    <link href="vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">#}
-{#    <link href="vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">#}
-{#    <!-- Font special for pages-->#}
+{#    <link href="{{asset('vendor/mdi-font/css/material-design-iconic-font.min.css')}}" rel="stylesheet" media="all">#}
+{#    <link href="{{asset('vendor/font-awesome-4.7/css/font-awesome.min.css')}}" rel="stylesheet" media="all">#}
+    <!-- Font special for pages-->
     <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
-{#    <!-- Vendor CSS-->#}
-{#    <link href="vendor/select2/select2.min.css" rel="stylesheet')}}" media="all">#}
-{#    <link href="vendor/datepicker/daterangepicker.css" rel="stylesheet" media="all">#}
+    <!-- Vendor CSS-->
+{#    <link href="{{ asset('vendor/select2/select2.min.css" rel="stylesheet') }}" media="all">#}
+{#    <link href="{{ asset('vendor/datepicker/daterangepicker.css') }}" rel="stylesheet" media="all">#}
 
     <!-- Main CSS-->
     <link href="{% static 'css/create_form.css' %}" rel="stylesheet" media="all">
 </head>
 
-
-
 {%  block content %}
-
-
 
     <div class="page-wrapper bg-gra-01 p-t-20 p-b-100 font-poppins">
         <div class="wrapper wrapper--w780">
@@ -36,75 +32,70 @@
                 <div class="card-body">
                     <h2 class="title">Créer un nouveau site</h2>
                     <!-- Déclaration du form-->
-{#                    <form name="monform" action="/France/oneSite/updateSend/{{ list_site.id}}/"  method="POST" enctype="multipart/form-data">#}
                     <form name="monform" action=""  method="post" enctype="multipart/form-data">
-                        <!-- Partie gauche -->
-
                         {% csrf_token %}
-                        <input class="input--style-3" type="hidden" name="id" id="id" value="{{ site.id}}">
+                        <!-- Partie gauche -->
                         <div id="left_part">
                             <div class="input-group">
                                 <label>Nom du site :*</label>
-                                <input class="input--style-3" type="text" name="Nom_du_site" id="Nom_du_site" value="{{ site.nom_du_site}}" required>
+                                <input class="input--style-3" type="text" name="Nom_du_site" id="Nom_du_site" value="" required>
                             </div>
                             <div class="input-group">
                                 <label>Coordonées Lambert X :*</label>
-                                <input type="text" class="input--style-3" name="Lambert_X" id="Lambert_X" value="{{ site.lambert_x}}" required>
+                                <input type="text" class="input--style-3" name="Lambert_X" id="Lambert_X" value="" required>
                             </div>
                             <div class="input-group">
                                 <label>Coordonées Lambert Y :*</label>
-                                <input type="text" class="input--style-3" name="Lambert_Y" id="Lambert_Y" value="{{ site.lambert_y}}" required>
+                                <input type="text" class="input--style-3" name="Lambert_Y" id="Lambert_Y" value="" required>
                             </div>
                             <div class="input-group">
                                 <label>Region :*</label>
-                                <input type="text" class="input--style-3" name="Region" id="Region" value="{{ site.region}}" required>
+                                <input type="text" class="input--style-3" name="Region" id="Region" value="" required>
                             </div>
                             <div class="input-group">
                                 <label>Departement :*</label>
-                                <input class="input--style-3" type="text" name="Departement" id="Departement" value="{{ site.departement}}" required>
+                                <input class="input--style-3" type="text" name="Departement" id="Departement" value="" required>
                             </div>
                             <div class="input-group">
                                 <label>Commune :*</label>
-                                <input class="input--style-3" type="text" name="Commune" id="Commune" value="{{ site.commune}}" required>
+                                <input class="input--style-3" type="text" name="Commune" id="Commune" value="" required>
                             </div>
                         </div>
                         <!-- Partie droite -->
-                        <div id="right_part">
+                        <div id="right_part" >
                             <div class="input-group">
                                 <label>Date de début :*</label>
-                                <input class="input--style-3 js-datepicker" type="text" name="Date_debut" id="Date_debut" value="{{ site.date_debut}}" required>
+                                <input class="input--style-3 js-datepicker" type="text" name="Date_debut" id="Date_debut" value="" required>
                                 <i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>
                             </div>
                             <div class="input-group">
                                 <label>Date de fin :*</label>
-                                <input class="input--style-3 js-datepicker" type="text" name="Date_fin" id="Date_fin" value="{{ list_site.date_fin}}" required>
+                                <input class="input--style-3 js-datepicker" type="text" name="Date_fin" id="Date_fin" value="" required>
                                 <i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>
                             </div>
                             <div class="input-group">
                                 <label>Périodes :*</label>
-                                <input class="input--style-3" type="text" name="Periodes" id="Periodes" value="{{ site.periodes}}" required>
+                                <input class="input--style-3" type="text" name="Periodes" id="Periodes" value="" required>
                             </div>
                             <div class="input-group">
                                 <label>Type d'intervention :*</label>
-                                <input class="input--style-3" type="text" name="Type_intervention" id="Type_intervention" value="{{ site.type_intervention}}" required>
+                                <input class="input--style-3" type="text" name="Type_intervention" id="Type_intervention" value="" required>
                             </div>
                             <div class="input-group">
                                 <label>Thèmes :</label>
-                                <input class="input--style-3" type="text"name="Themes" id="Themes" value="{{ site.themes}}" >
+                                <input class="input--style-3" type="text"name="Themes" id="Themes" value="" >
                             </div>
                             <div class="p-t-10">
                                 <button class="btn btn--green btn--radius btn--pill" type="submit">Envoyer</button>
                             </div>
                         </div>
-{#                    </form>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 
-
-
-{#    <!-- Jquery JS-->#}
+    <!-- Jquery JS-->
 {#    <script src="../../vendor/jquery/jquery.min.js"></script>#}
 {#    <!-- Vendor JS-->#}
 {#    <script src="../../vendor/select2/select2.min.js"></script>#}
@@ -113,5 +104,4 @@
 
     <!-- Main JS-->
     <script src="{% static 'js/create_form.js' %}"></script>
-
 {%  endblock  %}

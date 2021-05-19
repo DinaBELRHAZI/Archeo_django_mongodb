@@ -7,38 +7,16 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django import forms
 # Create your views here.
 from France.models import France
-from forms import FranceForm
 from pyproj import Proj, transform, CRS
 
 
-# context = {
-#         'Sites_list': "toto"
-#     }
+
 
 # AFFICHAGE DE LA LISTE DES SITES ***********************************
 
 
 def index(request):
     list_site = France.objects.all()
-
-    for site in list_site:
-        # print(site.nom_du_site + site.lambert_x + site.lambert_y)
-
-        list = {
-            'id': site.id,
-            'lambert_x': site.lambert_x,
-            'lambert_y': site.lambert_y,
-            'region': site.region,
-            'departement': site.departement,
-            'commune': site.commune,
-            'nom_du_site': site.nom_du_site,
-            'date_debut': site.date_debut,
-            'date_fin': site.date_fin,
-            'periodes': site.periodes,
-            'themes': site.themes,
-            'type_intervention': site.type_intervention,
-        }
-        # print(list)
 
     return render(request, 'France/listeFranceAll.html', {'list_site': list_site})  # appem du rep template
 
@@ -49,27 +27,15 @@ def maps(request):
     list_site = France.objects.all()
 
     for site in list_site:
+
         inProj = CRS('EPSG:2154')
         outProj = CRS('EPSG:4326')
-        site.lambert_x = re.sub("[,]", ".", site.lambert_x)
-        site.lambert_y = re.sub("[,]", ".", site.lambert_y)
-        x2, y2 = transform(inProj, outProj, site.lambert_x, site.lambert_y)
-
-        list = {
-            'id': site.id,
-            'lambert_x': x2,
-            'lambert_y': y2,
-            'region': site.region,
-            'departement': site.departement,
-            'commune': site.commune,
-            'nom_du_site': site.nom_du_site,
-            'date_debut': site.date_debut,
-            'date_fin': site.date_fin,
-            'periodes': site.periodes,
-            'themes': site.themes,
-            'type_intervention': site.type_intervention,
-        }
-        # print(list)
+        list_site.lambert_x = re.sub("[,]", ".", site.lambert_x)
+        list_site.lambert_y = re.sub("[,]", ".", site.lambert_y)
+        x, y = transform(inProj, outProj, list_site.lambert_x, list_site.lambert_y)
+        print(x)
+        list_site.lambert_x = x
+        list_site.lambert_y = y
 
     return render(request, 'France/maps.html', {'list_site': list})  # appem du rep template
 
@@ -78,214 +44,95 @@ def maps(request):
 
 def oneSite(request, id):
     # print(id)
-    list_site = France.objects.filter(id=id)
+    list_site = France.objects.get(id=id)
+    print(list_site.lambert_x)
+    print(list_site.lambert_y)
 
-    print(list_site)
-    for site in list_site:
-        # print(site.id, site.nom_du_site + site.lambert_x + site.lambert_y)
-        # inProj = Proj(init='epsg:2154')
-        # outProj = Proj(init='epsg:4326')
-        inProj = CRS('EPSG:2154')
-        outProj = CRS('EPSG:4326')
-        # site.lambert_x = re.sub("[,]", ".", site.lambert_x)
-        # site.lambert_y = re.sub("[,]", ".", site.lambert_y)
-        x2, y2 = transform(inProj, outProj, site.lambert_x, site.lambert_y)
+    inProj = CRS('EPSG:2154')
+    outProj = CRS('EPSG:4326')
+    list_site.lambert_x = re.sub("[,]", ".", list_site.lambert_x)
+    list_site.lambert_y = re.sub("[,]", ".", list_site.lambert_y)
+    x, y = transform(inProj, outProj, list_site.lambert_x, list_site.lambert_y)
 
-        print(x2, y2)
+    list_site.lambert_x = x
+    list_site.lambert_y = y
 
-        list = {
-            'id': site.id,
-            'lambert_x': x2,
-            'lambert_y': y2,
-            'region': site.region,
-            'departement': site.departement,
-            'commune': site.commune,
-            'nom_du_site': site.nom_du_site,
-            'date_debut': site.date_debut,
-            'date_fin': site.date_fin,
-            'periodes': site.periodes,
-            'themes': site.themes,
-            'type_intervention': site.type_intervention,
-        }
-
-        # print(list)
-    return render(request, 'France/listeFranceOneSite.html', {'list_site': list})  # appem du rep template
+    return render(request, 'France/listeFranceOneSite.html', {'list_site': list_site})  # appem du rep template
 
 
 # CREATION ET MODIFICATION D'UN SITE ***********************************
 
+
+
 def Site(request, id=0):
+
     if request.method == "GET":
         # S'il s'agit d'un formulaire d'insertion, le formulaire sera vide sinon il sera prérempli
-        # Si id == 0, c'est une insertion sinon une mis à jour
+        # Si id == 0, c'est une insertion sinon une mise à jour
         if id == 0:
-            form = FranceForm()
-            return render(request, 'France/creerSite.html')
+            return render(request, 'France/creerSite_1.html')
         else:
+
             # Récupère les données selon l'id du site
-            sites = France.objects.filter(pk=id)
-            # print(sites)
-            # form = FranceForm(instance=sites)
-
-            for site in sites:
-
-                list = {
-                    'id': site.id,
-                    'lambert_x': site.lambert_x,
-                    'lambert_y': site.lambert_y,
-                    'region': site.region,
-                    'departement': site.departement,
-                    'commune': site.commune,
-                    'nom_du_site': site.nom_du_site,
-                    'date_debut': site.date_debut,
-                    'date_fin': site.date_fin,
-                    'periodes': site.periodes,
-                    'themes': site.themes,
-                    'type_intervention': site.type_intervention,
-                }
-                print(list)
-            # return render(request, 'France/modifSite.html', {'list_site': list})
-            return render(request, 'France/modifSite.html', {'list_site': list})  # appel du form template
-    else:
-        if id == 0:
-            form = FranceForm(request.POST)
-        else:
             site = France.objects.get(pk=id)
-            form = FranceForm(request.POST, instance=site)
-            print("form")
-        if form.is_valid():
-            form.save()
-            print("Formualaire enregistré !")
+            print(site)
+
+            return render(request, 'France/modifSite.html',  {'site': site})
+    else:
+
+        print("Je crée un nouveau monument !")
+        print(request.POST)
+        print(request.POST["Lambert_X"])
+
+        # Récupère les données de chaque champs
+        lambert_x = request.POST['Lambert_X']
+        lambert_y = request.POST['Lambert_Y']
+        region = request.POST['Region']
+        departement = request.POST['Departement']
+        commune = request.POST['Commune']
+        nom_du_site = request.POST['Nom_du_site']
+        date_debut = request.POST['Date_debut']
+        date_fin = request.POST['Date_fin']
+        periodes = request.POST['Periodes']
+        themes = request.POST['Themes']
+        type_intervention = request.POST['Type_intervention']
+        print("Instantiation, création ou modif ")
+
+
+        if id == 0:
+            # Insertion
+
+            # Récupère le dernier id de la table
+            idNew = France.objects.last().id
+            # Incrémentation de l'id
+            idNew =  idNew+1
+            print(idNew)
+
+            # Insertion des données en bdd
+            franceRecup = France.objects.create(id = idNew, lambert_x = lambert_x, lambert_y = lambert_y, region = region, departement = departement\
+                                                , commune = commune, nom_du_site = nom_du_site\
+                                                , date_debut = date_debut, date_fin = date_fin, periodes = periodes, themes = themes, type_intervention = type_intervention)
+
+
+        else:
+            # Modification
+
+            # Récupère les données d'un site selon son id
+            franceRecup = France.objects.get(pk=id)
+
+            # Ecrasement des données des champs éxistant
+            franceRecup.lambert_x = lambert_x
+            franceRecup.lambert_y = lambert_y
+            franceRecup.region = region
+            franceRecup.departement = departement
+            franceRecup.commune = commune
+            franceRecup.nom_du_site = nom_du_site
+            franceRecup.date_debut = date_debut
+            franceRecup.date_fin = date_fin
+            franceRecup.periodes = periodes
+            franceRecup.themes = themes
+            franceRecup.type_intervention = type_intervention
+
+        franceRecup.save()
         return redirect("France:index")
 
-
-
-
-
-
-
-#
-# def creerSiteSend(request):
-#     print(request)
-#
-#     # pass the object as instance in form
-#     form = France(request.POST or None)
-#     print(form.nom_du_site)
-#     # save the data from the form and
-#     # redirect to detail_view
-#     if form.is_valid():
-#         form.save()
-#         # return HttpResponseRedirect("/" + id)
-#     #
-#     #
-#     # if request.method == "POST":
-#     #     if form.is_valid():
-#     #         form.save()
-#     #     else:
-#     #         form = PostCreateForm()
-#
-#     return render(request, 'France/listeFranceAll.html', {'form': form})  # appem du rep template
-
-
-# MODIFICATION D'UN SITE ***********************************
-
-# def oneSiteUpdate(request, id):
-#     list_site = France.objects.filter(id=id)
-#
-#     # print(list_site)
-#     for site in list_site:
-#         # print(site.id, site.nom_du_site + site.lambert_x + site.lambert_y)
-#         list = {
-#             'id': site.id,
-#             'lambert_x': site.lambert_x,
-#             'lambert_y': site.lambert_y,
-#             'region': site.region,
-#             'departement': site.departement,
-#             'commune': site.commune,
-#             'nom_du_site': site.nom_du_site,
-#             'date_debut': site.date_debut,
-#             'date_fin': site.date_fin,
-#             'periodes': site.periodes,
-#             'themes': site.themes,
-#             'type_intervention': site.type_intervention,
-#         }
-#
-#     return render(request, 'France/modifSite.html', {'list_site': list})  # appem du rep template
-
-
-# def oneSiteUpdateSend(request, id):
-#     list_site = France.objects.get(id=id)
-#     form = FranceForm(request.POST, instance=list_site)
-#     print("DANS oneSiteUpdateSend")
-#     if form.is_valid():
-#         form.save()
-#         print("Modification validée")
-#         return redirect("France:index")
-#
-#         # if request.method == "POST":
-#     #     form = PostCreateForm(request.POST)
-#     #     if form.is_valid():
-#     #         form.save()
-#     #     else:
-#     #         form = PostCreateForm()
-#
-#     # list_site = France.objects.filter(id=id)
-#     #
-#     # # print(list_site)
-#     # for site in list_site:
-#     #
-#     #     France.objects.get
-#     #     list = {
-#     #         'id': site.id,
-#     #         'lambert_x': site.lambert_x,
-#     #         'lambert_y': site.lambert_y,
-#     #         'region': site.region,
-#     #         'departement': site.departement,
-#     #         'commune': site.commune,
-#     #         'nom_du_site': site.nom_du_site,
-#     #         'date_debut': site.date_debut,
-#     #         'date_fin': site.date_fin,
-#     #         'periodes': site.periodes,
-#     #         'themes': site.themes,
-#     #         'type_intervention': site.type_intervention,
-#     #     }
-#     #     print(list)
-#
-#     return render(request, 'France/modifSite.html', {'list_site': list_site})  # appem du rep template
-
-
-# update view for details
-# def update_view(request, id):
-#     # dictionary for initial data with
-#     # field names as keys
-#     # list = {
-#     #     'id': site.id,
-#     #     'lambert_x': site.lambert_x,
-#     #     'lambert_y': site.lambert_y,
-#     #     'region': site.region,
-#     #     'departement': site.departement,
-#     #     'commune': site.commune,
-#     #     'nom_du_site': site.nom_du_site,
-#     #     'date_debut': site.date_debut,
-#     #     'date_fin': site.date_fin,
-#     #     'periodes': site.periodes,
-#     #     'themes': site.themes,
-#     #     'type_intervention': site.type_intervention,
-#     # }
-#
-#     # fetch the object related to passed id
-#     obj = get_object_or_404(France, id=id)
-#
-#     # pass the object as instance in form
-#     form = France(request.POST or None, instance=obj)
-#
-#     # save the data from the form and
-#     # redirect to detail_view
-#     if form.is_valid():
-#         form.save()
-#         return HttpResponseRedirect("/" + id)
-#
-#     # add form dictionary to context
-#     list["form"] = form
-#
-#     return render(request, "update_view.html", list)

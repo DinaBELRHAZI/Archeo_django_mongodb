@@ -9,6 +9,7 @@ from pathlib import Path
 
 
 class France(models.Model):
+    id = models.IntegerField(primary_key=True, db_column='id', blank=True, null=False)
     lambert_x = models.CharField(db_column='Lambert_X', max_length=255, blank=True, null=True)  # Field name made lowercase.
     lambert_y = models.CharField(db_column='Lambert_Y', max_length=255, blank=True, null=True)  # Field name made lowercase.
     region = models.CharField(db_column='Region', max_length=255, blank=True, null=True)  # Field name made lowercase.
