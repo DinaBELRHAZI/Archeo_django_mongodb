@@ -10,10 +10,7 @@ from France.models import France
 from pyproj import Proj, transform, CRS
 
 
-
-
 # AFFICHAGE DE LA LISTE DES SITES ***********************************
-
 
 def index(request):
     list_site = France.objects.all()
@@ -26,18 +23,23 @@ def index(request):
 def maps(request):
     list_site = France.objects.all()
 
-    for site in list_site:
+    inProj = CRS('EPSG:2154')
+    outProj = CRS('EPSG:4326')
 
-        inProj = CRS('EPSG:2154')
-        outProj = CRS('EPSG:4326')
+    for site in list_site:
         list_site.lambert_x = re.sub("[,]", ".", site.lambert_x)
         list_site.lambert_y = re.sub("[,]", ".", site.lambert_y)
         x, y = transform(inProj, outProj, list_site.lambert_x, list_site.lambert_y)
-        print(x)
-        list_site.lambert_x = x
-        list_site.lambert_y = y
+        site.lambert_x = x
+        site.lambert_y = y
+        print(site.lambert_x)
+        print(site.lambert_y)
 
-    return render(request, 'France/maps.html', {'list_site': list})  # appem du rep template
+    list_site.lambert_x = site.lambert_x
+    list_site.lambert_y = site.lambert_y
+
+
+    return render(request, 'France/maps.html', {'list': list_site})  # appem du rep template
 
 
 # AFFICHAGE D'UN SITE ***********************************
@@ -63,9 +65,7 @@ def oneSite(request, id):
 # CREATION ET MODIFICATION D'UN SITE ***********************************
 
 
-
 def Site(request, id=0):
-
     if request.method == "GET":
         # S'il s'agit d'un formulaire d'insertion, le formulaire sera vide sinon il sera prérempli
         # Si id == 0, c'est une insertion sinon une mise à jour
@@ -77,7 +77,7 @@ def Site(request, id=0):
             site = France.objects.get(pk=id)
             print(site)
 
-            return render(request, 'France/modifSite.html',  {'site': site})
+            return render(request, 'France/modifSite.html', {'site': site})
     else:
 
         print("Je crée un nouveau monument !")
@@ -98,20 +98,21 @@ def Site(request, id=0):
         type_intervention = request.POST['Type_intervention']
         print("Instantiation, création ou modif ")
 
-
         if id == 0:
             # Insertion
 
             # Récupère le dernier id de la table
             idNew = France.objects.last().id
             # Incrémentation de l'id
-            idNew =  idNew+1
+            idNew = idNew + 1
             print(idNew)
 
             # Insertion des données en bdd
-            franceRecup = France.objects.create(id = idNew, lambert_x = lambert_x, lambert_y = lambert_y, region = region, departement = departement\
-                                                , commune = commune, nom_du_site = nom_du_site\
-                                                , date_debut = date_debut, date_fin = date_fin, periodes = periodes, themes = themes, type_intervention = type_intervention)
+            franceRecup = France.objects.create(id=idNew, lambert_x=lambert_x, lambert_y=lambert_y, region=region,
+                                                departement=departement \
+                                                , commune=commune, nom_du_site=nom_du_site \
+                                                , date_debut=date_debut, date_fin=date_fin, periodes=periodes,
+                                                themes=themes, type_intervention=type_intervention)
 
 
         else:
@@ -135,4 +136,3 @@ def Site(request, id=0):
 
         franceRecup.save()
         return redirect("France:index")
-

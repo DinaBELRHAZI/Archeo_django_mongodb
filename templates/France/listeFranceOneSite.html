@@ -20,16 +20,11 @@
 <div class='header'>
     <p class='text-center'>{{ list_site.nom_du_site}}</p>
     <strong>
-{#        <a class="btn btn-outline-primary"  href='{{ path("listAllFrance") }}' id="btn-liste" >#}
         <a class="btn btn-outline-primary"  href='/France/' id="btn-liste" >
              <h3> Liste des sites</h3>
         </a>
-{#        <a class="btn btn-outline-success" href='{{ path("listeFranceConvert") }}' id="btn-carte" >#}
         <a class="btn btn-outline-success" href='/France/maps/' id="btn-carte"  >
             <h3>Carte</h3>
-        </a>
-{#        <a class="btn btn-outline-info" href='{{ path("OneSitePhotos", { 'id': oneSite.getId }) }}' id="btn-img" >#}
-            <h3>Photos</h3>
         </a>
     </strong>
 </div>
@@ -138,8 +133,6 @@
 
         var Nom_du_site = "{{ list_site.nom_du_site}}";
 
-{#        {% for tab in tableau %}#}
-
             newPoint1 = new google.maps.LatLng({{ list_site.lambert_x}}, {{ list_site.lambert_y}});
 
             //alert(newPoint1);
@@ -151,9 +144,6 @@
             });
 
         streetView(newPoint1);
-
-
-{#        {%  endfor %}#}
 
     }
     window.onload = function(){

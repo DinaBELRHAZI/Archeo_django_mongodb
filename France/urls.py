@@ -7,13 +7,10 @@ app_name = 'France'
 urlpatterns = [
     # ex: /pizzas/
     path('', views.index, name='index'),
-    # path('creerSite/', views.creerSite, name='creerSite'),
     path('creerSite/', views.Site, name='creerSite'), # get et post request pour la création
     path('modifSite/<int:id>/', views.Site, name='modifSite'), # get et post request pour la maj
     path('maps/', views.maps, name='maps'),
     path('oneSite/<int:id>/', views.oneSite, name='oneSite'),
-    # path('oneSite/update/<int:id>/', views.oneSiteUpdate, name='oneSiteUpdate'),
-    # path('oneSite/updateSend/<int:id>/', views.oneSiteUpdateSend, name='oneSiteUpdateSend'),
 
 
 

@@ -101,23 +101,22 @@
             // Déclaration de la infoWindow
             var infoWindow = new google.maps.InfoWindow();
 
-
-            // boucle sur la liste reçue du controller listeFranceConvert()
-            {% for list_site in list_site %}
-                var NomDuSite = "{{ list_site.nom_du_site }}";
-                var num = "{{ list_site.id}}";
-            {%  endfor %}
-
-
             //Création d'un tableau regroupant tous les markers
             var markers = [];
-{#alert("TEST")#}
-            // boucle sur le tableau reçu du controller listeFranceConvert()
-           {% for list_site in list_site %}
+
+
+
+
+
+            // boucle sur le tableau reçu du controller maps()
+            {% for list_site in list %}
+
+                var NomDuSite = "{{ list_site.nom_du_site }}";
+                var num = "{{ list_site.id}}";
 
                 // Déclaration des coordonnées
                 newPoint1 = new google.maps.LatLng({{ list_site.lambert_x}}, {{ list_site.lambert_y}} );
-                alert(newPoint1);
+
 
                 // Déclaration des paramètres récupérer du tableau
                 var commune = "{{ list_site.commune }}";
@@ -137,7 +136,6 @@
                     // enregistrement dans le tableau des markers
                    markers.push(marker);
 
-{#alert("2");#}
               // InfoWindow
                 (function (marker, commune1, departement1, periodes1, region1,NomDuSite1,num1, pointrecu) {
                     google.maps.event.addListener(marker, "click", function (e) {
@@ -169,10 +167,10 @@
                     });
                     //Variables déclarées plus haut mis en paramètre
                 }) (marker, commune, departement, periodes, region,NomDuSite,num, newPoint1)
-{#alert("3");#}
+
             // Fin de la boucle For
            {%  endfor %}
-{#alert("4");#}
+
             var markerCluster = new MarkerClusterer(map, markers, {
                 imagePath:
                     "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m"

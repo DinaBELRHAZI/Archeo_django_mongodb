@@ -12,15 +12,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 
     <link href="{% static 'css/listeFranceAll.css' %}" rel="stylesheet" media="all">
-{#    <link href="{% static 'css/css1.css' %}" rel="stylesheet" media="all">#}
 </head>
 <body>
 {% block body %}
 <div class='header'>
     <p class='text-center'>Tous les sites de fouilles archéologiques en France</p>
     <strong>
-{#        appel méthode controller#}
-{#        <a class="btn btn-outline-success" href='{% path("listeFranceConvert") %}' id="btn-carte"  >#}
         <a class="btn btn-outline-success" href='/France/maps/' id="btn-carte"  >
             <h3>Carte</h3>
         </a>
@@ -55,9 +52,6 @@
                         </h4>
                     </div>
                     <strong>
-
-{#                        <a class="btn btn-outline-primary" id="btn_plus" href='/france/liste/site/{{ list.id}}' ><h3>Plus de détails </h3></a>#}
-{#                        <a class="btn btn-outline-warning" id="btn_plus" href='/france/site/update/{{ list.id}}' ><h3>Modifier </h3></a>#}
                         <a class="btn btn-outline-primary" id="btn_plus" href='/France/oneSite/{{ list.id }}' ><h3>Plus de détails </h3></a>
                         <a class="btn btn-outline-warning" id="btn_plus" href='/France/modifSite/{{ list.id}}' ><h3>Modifier </h3></a>
                     </strong>
